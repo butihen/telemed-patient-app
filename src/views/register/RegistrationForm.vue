@@ -2,18 +2,23 @@
 import { VForm } from "vuetify/components"
 import { requiredValidator } from "@validators"
 import { useUserStore } from "@/stores/user.js"
+import {useRouter} from "vue-router";
 
 const userStore = useUserStore()
 
 const refVForm = ref()
 
 const data = ref({})
-
+const router = useRouter()
 const onSubmit = () => {
-  refVForm.value?.validate().then(({ valid: isValid }) => {
+  refVForm.value?.validate().then(async({ valid: isValid }) => {
     if (isValid) {
-      // do something
-    }
+  const user = await userStore.registeruser(data.value)
+  if (user) {
+    alert("Successfully registered")
+    
+  }
+}
   })
 }
 </script>
