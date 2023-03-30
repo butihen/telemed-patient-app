@@ -2,6 +2,12 @@
 import { useSkins } from '@core/composable/useSkins'
 import { useThemeConfig } from '@core/composable/useThemeConfig'
 import { AppContentLayoutNav } from '@layouts/enums'
+import { useUserStore } from '@/stores/user.js';
+
+const userStore = useUserStore()
+
+userStore.fetchPatientData()
+
 
 const DefaultLayoutWithHorizontalNav = defineAsyncComponent(() => import('./components/DefaultLayoutWithHorizontalNav.vue'))
 const DefaultLayoutWithVerticalNav = defineAsyncComponent(() => import('./components/DefaultLayoutWithVerticalNav.vue'))

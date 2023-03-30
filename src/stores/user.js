@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { emailValidator, requiredValidator } from '@validators'
 import {register } from '@/firebase/firebase-register.js'
-import {addPatient } from '@/firebase/firestore-patient.js'
+import {addPatient, getPatientByUserId } from '@/firebase/firestore-patient.js'
 import router from '@/router/index.js'
+import   loginUsingFirebase  from '@/firebase/firebase-login.js'
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -73,12 +74,39 @@ export const useUserStore = defineStore('userStore', {
         })
         router.push('/')
       } catch (err) {
+        this.fetchPatientData()
         this.error = err
       } finally {
         this.loading = false
       }
 
-      // this.fetchPatientData()
+      
     },
+
+    async fetchPatientData() {
+      const user = JSON.parse(localStorage.getItem('user'))
+
+      if(user) {
+        this.patient = await getPatientByUserId(user.uid)
+      }
+    },
+    async login(data) {
+      this.startLoading()
+
+      try {
+        await loginUsingFirebase(data)
+        this.fetchPatientData()
+        router.push("/")
+      
+      } catch (error) {
+        this.error = err
+
+      }
+      finally {
+        this.loading = false
+      }
+    }
+
+
   }
 })

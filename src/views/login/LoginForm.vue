@@ -18,7 +18,7 @@ const data = reactive({
 const onSubmit = () => {
   refVForm.value?.validate().then( async ({ valid: isValid }) => {
     if (isValid) {
-      // do something
+     userStore.login(data)
     }
   })
 }
